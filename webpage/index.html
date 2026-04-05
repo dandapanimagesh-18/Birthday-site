@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Ultimate Birthday Surprise 🎉</title>
+
+<style>
+body {
+    margin:0;
+    overflow:hidden;
+    font-family: Arial;
+    color:white;
+    text-align:center;
+    background: linear-gradient(270deg,#ff9a9e,#fad0c4,#fbc2eb,#a18cd1);
+    background-size:800% 800%;
+    animation:gradientMove 10s ease infinite;
+}
+
+@keyframes gradientMove {
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+.center {
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+}
+
+/* TITLE */
+#title {
+    font-size:50px;
+    animation: glow 2s infinite;
+}
+@keyframes glow {
+    0%{text-shadow:0 0 10px pink;}
+    50%{text-shadow:0 0 40px hotpink;}
+    100%{text-shadow:0 0 10px pink;}
+}
+
+/* GIFT */
+#gift {
+    width:200px;
+    cursor:pointer;
+    animation:bounce 2s infinite;
+}
+@keyframes bounce {
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-15px);}
+}
+
+/* FLOATING */
+.heart,.balloon,.sparkle,.star {
+    position:absolute;
+}
+.heart{animation:floatUp 5s linear infinite;}
+.balloon{animation:rise 6s linear infinite;}
+.sparkle,.star{animation:blink 2s infinite;}
+
+@keyframes floatUp {
+    from{transform:translateY(100vh);}
+    to{transform:translateY(-10vh);}
+}
+@keyframes rise {
+    from{transform:translateY(100vh);}
+    to{transform:translateY(-10vh);}
+}
+@keyframes blink {
+    0%{opacity:0;}
+    50%{opacity:1;}
+    100%{opacity:0;}
+}
+
+/* RIPPLE */
+.ripple {
+    position:absolute;
+    border-radius:50%;
+    background:rgba(255,255,255,0.5);
+    animation:ripple 0.6s linear;
+}
+@keyframes ripple {
+    from{transform:scale(0);}
+    to{transform:scale(4); opacity:0;}
+}
+
+/* COUNTDOWN */
+#countdown { font-size:60px; }
+
+/* NAME */
+#name {
+    font-size:40px;
+    animation:glow 1.5s infinite alternate;
+}
+
+/* MESSAGE */
+#message {
+    font-size:20px;
+    border-right:2px solid white;
+    white-space:nowrap;
+    overflow:hidden;
+}
+
+/* VIDEO */
+#videoContainer {
+    display:none;
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:black;
+    justify-content:center;
+    align-items:center;
+}
+video {
+    width:90%;
+    max-width:800px;
+}
+
+/* CONFETTI */
+.confetti {
+    position:absolute;
+    animation:fall 3s linear infinite;
+}
+@keyframes fall {
+    from{transform:translateY(-10vh);}
+    to{transform:translateY(100vh);}
+}
+
+/* ENDING */
+#endingScreen {
+    display:none;
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:black;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+}
+#finalText {
+    font-size:40px;
+    text-shadow:0 0 20px pink;
+}
+#finalMessage {
+    font-size:20px;
+    border-right:2px solid white;
+    white-space:nowrap;
+    overflow:hidden;
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="voice">
+    <source src="voice.mp3" type="audio/mpeg">
+</audio>
+
+<!-- FIRST PAGE -->
+<div id="firstPage" class="center">
+    <h1 id="title"></h1>
+    <p>Tap the magic gift 🎁</p>
+    <img src="image.jpg" id="gift" onclick="startExperience()">
+</div>
+
+<!-- COUNTDOWN -->
+<div id="countdownScreen" class="center" style="display:none;">
+    <div id="countdown">3</div>
+</div>
+
+<!-- MAIN -->
+<div id="mainContent" class="center" style="display:none;">
+    <div id="name">MARIEM 💖</div>
+    <div id="message"></div>
+</div>
+
+<!-- VIDEO -->
+<div id="videoContainer">
+    <video id="myVideo" autoplay muted controls>
+        <source src="video.mp4" type="video/mp4">
+    </video>
+</div>
+
+<!-- ENDING -->
+<div id="endingScreen">
+    <h1 id="finalText"></h1>
+    <p id="finalMessage"></p>
+</div>
+
+<script>
+
+/* TITLE TYPE */
+let txt="HAPPY BDAY CHLOOOO 💖";
+let i=0;
+function typeTitle(){
+    if(i<txt.length){
+        document.getElementById("title").innerHTML+=txt.charAt(i);
+        i++;
+        setTimeout(typeTitle,100);
+    }
+}
+typeTitle();
+
+/* 💖 DOUBLE HEART RAIN */
+setInterval(()=>{
+for(let i=0;i<2;i++){
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML="💖";
+h.style.left=Math.random()*100+"vw";
+h.style.fontSize=(20 + Math.random()*30)+"px";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),5000);
+}
+},150);
+
+/* 💓 EXTRA SMALL HEARTS */
+setInterval(()=>{
+let h=document.createElement("div");
+h.innerHTML="💕";
+h.style.position="absolute";
+h.style.left=Math.random()*100+"vw";
+h.style.top=Math.random()*100+"vh";
+h.style.opacity="0.5";
+h.style.fontSize="15px";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),3000);
+},100);
+
+/* 🎈 DOUBLE BALLOONS */
+setInterval(()=>{
+for(let i=0;i<2;i++){
+let b=document.createElement("div");
+b.className="balloon";
+b.innerHTML=Math.random()>0.5?"🎈":"🎉";
+b.style.left=Math.random()*100+"vw";
+b.style.fontSize=(25 + Math.random()*35)+"px";
+document.body.appendChild(b);
+setTimeout(()=>b.remove(),6000);
+}
+},400);
+
+/* ✨ SPARKLES */
+setInterval(()=>{
+let s=document.createElement("div");
+s.className="sparkle";
+s.innerHTML="✨";
+s.style.left=Math.random()*100+"vw";
+s.style.top=Math.random()*100+"vh";
+document.body.appendChild(s);
+setTimeout(()=>s.remove(),2000);
+},200);
+
+/* ⭐ STARS */
+setInterval(()=>{
+let st=document.createElement("div");
+st.className="star";
+st.innerHTML="⭐";
+st.style.left=Math.random()*100+"vw";
+st.style.top=Math.random()*100+"vh";
+document.body.appendChild(st);
+setTimeout(()=>st.remove(),2000);
+},400);
+
+/* MOUSE TRAIL */
+document.addEventListener("mousemove",e=>{
+let s=document.createElement("div");
+s.innerHTML="✨";
+s.style.position="absolute";
+s.style.left=e.pageX+"px";
+s.style.top=e.pageY+"px";
+document.body.appendChild(s);
+setTimeout(()=>s.remove(),800);
+});
+
+/* CLICK RIPPLE */
+document.addEventListener("click",e=>{
+let r=document.createElement("div");
+r.className="ripple";
+r.style.left=e.pageX+"px";
+r.style.top=e.pageY+"px";
+r.style.width="20px";
+r.style.height="20px";
+document.body.appendChild(r);
+setTimeout(()=>r.remove(),600);
+});
+
+/* FIREWORK */
+function fireBurst(){
+for(let i=0;i<25;i++){
+let f=document.createElement("div");
+f.innerHTML="🎆";
+f.style.position="absolute";
+f.style.left=Math.random()*100+"vw";
+f.style.top=Math.random()*100+"vh";
+f.style.fontSize="30px";
+document.body.appendChild(f);
+setTimeout(()=>f.remove(),2000);
+}
+}
+
+/* START */
+function startExperience(){
+document.getElementById("music").play();
+fireBurst();
+
+setTimeout(()=>{
+document.getElementById("firstPage").style.display="none";
+document.getElementById("countdownScreen").style.display="block";
+
+let c=3;
+let inter=setInterval(()=>{
+c--;
+document.getElementById("countdown").innerText=c;
+
+if(c===0){
+clearInterval(inter);
+showMain();
+}
+},1000);
+
+},1500);
+}
+
+/* MAIN */
+function showMain(){
+document.getElementById("countdownScreen").style.display="none";
+document.getElementById("mainContent").style.display="block";
+
+typeMsg();
+confetti();
+
+setTimeout(()=>{
+document.getElementById("mainContent").style.display="none";
+document.getElementById("videoContainer").style.display="flex";
+},6000);
+}
+
+/* MESSAGE */
+function typeMsg(){
+let t="Happy Birthday! 🎉 You are special 💖";
+let i=0;
+function type(){
+if(i<t.length){
+document.getElementById("message").innerHTML+=t.charAt(i);
+i++;
+setTimeout(type,50);
+}
+}
+type();
+}
+
+/* CONFETTI */
+function confetti(){
+setInterval(()=>{
+let c=document.createElement("div");
+c.className="confetti";
+c.innerHTML="🎊";
+c.style.left=Math.random()*100+"vw";
+document.body.appendChild(c);
+setTimeout(()=>c.remove(),3000);
+},200);
+}
+
+/* VIDEO END */
+document.getElementById("myVideo").onended=function(){
+document.getElementById("videoContainer").style.display="none";
+document.getElementById("endingScreen").style.display="flex";
+
+document.getElementById("voice").play();
+
+/* FINAL TEXT */
+let main="HAPPY BIRTHDAY 💖";
+let i=0;
+function typeMain(){
+if(i<main.length){
+document.getElementById("finalText").innerHTML+=main.charAt(i);
+i++;
+setTimeout(typeMain,100);
+}
+}
+typeMain();
+
+/* FINAL MESSAGE */
+setTimeout(()=>{
+let msg="You mean everything to me 💖 Forever special ✨";
+let j=0;
+function type2(){
+if(j<msg.length){
+document.getElementById("finalMessage").innerHTML+=msg.charAt(j);
+j++;
+setTimeout(type2,50);
+}
+}
+type2();
+},3000);
+
+/* FIREWORK LOOP */
+setInterval(()=>{
+let f=document.createElement("div");
+f.innerHTML="🎆";
+f.style.position="absolute";
+f.style.left=Math.random()*100+"vw";
+f.style.top=Math.random()*100+"vh";
+f.style.fontSize="30px";
+document.body.appendChild(f);
+setTimeout(()=>f.remove(),2000);
+},500);
+
+};
+
+</script>
+
+</body>
+</html>
